@@ -51,6 +51,12 @@ function drawCat(c, t, cx, bottom, s, { flip = false, mood = 'ok', shadow = null
   if (shadow) { c.fillStyle = shadow; px.forEach((col, i) => { if (!col) return; const [x, y] = at(i, 2, 2); c.fillRect(x, y, s, s); }); }
   px.forEach((col, i) => { if (!col) return; const [x, y] = at(i); c.fillStyle = col === OUT ? P.ink : col; c.fillRect(x, y, s, s); });
 }
+// A pixel paw print: three toes over a pad. Used as the small accent mark beside titles.
+const PAW = ['.X.X.X.', '.X.X.X.', '.......', '..XXX..', '.XXXXX.', '.XXXXX.', '..X.X..'];
+function paw(c, x, y, cell, col = P.orange) {
+  c.fillStyle = col;
+  PAW.forEach((row, j) => [...row].forEach((ch, i) => { if (ch === 'X') c.fillRect(x + i * cell, y + j * cell, cell, cell); }));
+}
 const sizeWord = t => t.fat > .7 ? 'chonky' : t.fat > .4 ? 'round' : 'small';
 const moodWord = t => ({ calm: 'calm', curious: 'curious', sleepy: 'sleepy', meowing: 'loud' })[t.expr] || 'calm';
 const tags = t => [t.coatName, t.fluffy && 'fluffy', t.len >= .62 && 'long'].filter(Boolean).join(' · ');
@@ -78,7 +84,7 @@ function poster(t) {
   paper(c, w, h, t.seed);
   text(c, t.name, 14, 46, DISPLAY(32));
   c.font = DISPLAY(32); const nw = c.measureText(t.name).width;
-  c.fillStyle = P.orange; c.fillRect(Math.min(14 + nw + 6, 180), 30, 12, 12);
+  paw(c, Math.min(14 + nw + 6, 180), 28, 2.2);
   swatches(c, w - 14, 12, [P.ink, ...catColors(t), P.orange]);
   const cap = `A ${moodWord(t)} yet ${sizeWord(t)} ${t.coatName}.`.toUpperCase().split(' '), lines = [''];
   cap.forEach(wd => { if ((lines[lines.length - 1] + ' ' + wd).trim().length > 16) lines.push(wd); else lines[lines.length - 1] = (lines[lines.length - 1] + ' ' + wd).trim(); });
@@ -142,7 +148,7 @@ export function welcomeCard(samples) {
   paper(c, w, h, 99);
   c.strokeStyle = P.ink; c.lineWidth = 1.2; c.strokeRect(.6, .6, w - 1.2, h - 1.2);
   text(c, 'MEOW BOT', 16, 44, DISPLAY(30));
-  c.fillStyle = P.orange; c.fillRect(w - 30, 26, 14, 14);
+  paw(c, w - 37, 22, 3);
   text(c, 'TURN YOUR MEOWS INTO PIXEL CATS.', 16, 62, MONO(8), P.brown);
   samples.forEach((t, i) => drawCat(c, t, 60 + i * 90, 154, fit(t, 76, 70, 4)));
   c.fillStyle = P.ink; c.fillRect(16, 172, w - 32, 1);
@@ -158,4 +164,4 @@ export function welcomeCard(samples) {
 }
 
 // Drawing helpers, shared with the Devpost gallery script.
-export { DISPLAY, drawCat, fit, MONO, paper, png, setup, swatches, text, vhatch };
+export { DISPLAY, drawCat, fit, MONO, paper, paw, png, setup, swatches, text, vhatch };

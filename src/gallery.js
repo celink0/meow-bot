@@ -2,7 +2,7 @@
 import { loadImage } from '@napi-rs/canvas';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { cap, describe, parseTyped, simulate, traitsFrom } from './engine.js';
-import { battleCard, catCard, DISPLAY, drawCat, fit, indexCard, MONO, P, paper, png, posterCard, setup, swatches, text, vhatch } from './cards.js';
+import { battleCard, catCard, DISPLAY, drawCat, fit, indexCard, MONO, P, paper, paw, png, posterCard, setup, swatches, text, vhatch } from './cards.js';
 
 const dir = new URL('../docs/gallery/', import.meta.url).pathname;
 rmSync(dir, { recursive: true, force: true }); mkdirSync(dir, { recursive: true });
@@ -50,7 +50,7 @@ const breeds = [['meow', 'solid'], ['meow meow', 'tuxedo'], ['meow mrrow MEEOW',
   const { cv, c } = base(1, null, null);
   text(c, 'MHACKS 2026 · AGENTS IN IMESSAGE', 28, 40, MONO(9), P.orange);
   text(c, 'MEOW', 28, 118, DISPLAY(72)); text(c, 'BOT', 28, 190, DISPLAY(72));
-  c.fillStyle = P.orange; c.fillRect(206, 150, 26, 26);
+  paw(c, 204, 146, 4.5);
   ['Meow at iMessage.', 'Get a pixel cat made from your voice.', 'Battle your friends.'].forEach((l, i) => text(c, l, 30, 232 + i * 19, MONO(11)));
   text(c, 'NO APP TO DOWNLOAD · REAL IMESSAGE · VOICE MEMOS', 30, H - 30, MONO(8.5), P.brown);
   const cards = await Promise.all([calico, tabby, tux].map(t => img(catCard(t))));
